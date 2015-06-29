@@ -55,12 +55,10 @@
         </beans:property>
     </beans:bean>
      
-    <beans:bean id="personDAO" class="jpa_bayan.PersonDAOImpl">
+    <beans:bean id="personDAO" class="jpa_bayan.PersonDAO">
         <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </beans:bean>
-    <beans:bean id="personService" class="jpa_bayan.PersonServiceImpl">
-        <beans:property name="personDAO" ref="personDAO"></beans:property>
-    </beans:bean>
+   
     <context:component-scan base-package="jpa_bayan" />
    
     <tx:annotation-driven transaction-manager="transactionManager"/>

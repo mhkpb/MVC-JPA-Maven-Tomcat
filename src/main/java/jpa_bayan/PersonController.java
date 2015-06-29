@@ -6,7 +6,7 @@
 package jpa_bayan;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+//import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,23 +15,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
  
 import jpa_bayan.Person;
-import jpa_bayan.PersonService;
+import jpa_bayan.PersonDAO;
  
 @Controller
 public class PersonController {
      
-    private PersonService personService;
+    private PersonDAO personDao;
      
     @Autowired(required=true)
-    @Qualifier(value="personService")
-    public void setPersonService(PersonService ps){
-        this.personService = ps;
+   // @Qualifier(value="personDao")
+    public void setPersonService(PersonDAO  pd){
+        this.personDao = pd;
     }
      
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
     public String listPersons(Model model) {
         model.addAttribute("person", new Person());
-        model.addAttribute("listPersons", this.personService.listPersons());
+        model.addAttribute("listPersons", this.personDao.listPersons());
         return "person";
     }
      
@@ -41,10 +41,10 @@ public class PersonController {
          
         if(p.getId() == 0){
             //new person, add it
-            this.personService.addPerson(p);
+            this.personDao.addPerson(p);
         }else{
             //existing person, call update
-            this.personService.updatePerson(p);
+            this.personDao.updatePerson(p);
         }
          
         return "redirect:/persons";
@@ -54,14 +54,14 @@ public class PersonController {
     @RequestMapping("/remove/{id}")
     public String removePerson(@PathVariable("id") int id){
          
-        this.personService.removePerson(id);
+        this.personDao.removePerson(id);
         return "redirect:/persons";
     }
   
     @RequestMapping("/edit/{id}")
     public String editPerson(@PathVariable("id") int id, Model model){
-        model.addAttribute("person", this.personService.getPersonById(id));
-        model.addAttribute("listPersons", this.personService.listPersons());
+        model.addAttribute("person", this.personDao.getPersonById(id));
+        model.addAttribute("listPersons", this.personDao.listPersons());
         return "person";
     }
      
